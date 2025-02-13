@@ -71,6 +71,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
+          // If you only need to fetch the data once (not in real-time),
+          //you should use a FutureBuilder instead of a StreamBuilder.
           child: FutureBuilder(
             future: currentUser != null
                 ? FirebaseFirestore.instance
