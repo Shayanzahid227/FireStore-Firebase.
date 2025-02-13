@@ -1,6 +1,20 @@
+import 'package:code_structure/firebase_options.dart';
+import 'package:code_structure/ui/auth/login/login_screen.dart';
+import 'package:code_structure/ui/auth/sign_in/sign_in_screen.dart';
+import 'package:code_structure/ui/home/home_screen.dart';
+import 'package:code_structure/ui/profile/edit_profile.dart';
+import 'package:code_structure/ui/profile/profile_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -10,28 +24,43 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return ScreenUtilInit(
+      designSize: const Size(394, 852),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(scaffoldBackgroundColor: const Color(0xffFAF8F6)),
+
+          ///
+          ///   stream builder is use when a value is changing frequently as user log in or sigIn or log out
+          ///
+          home:
+              //LogInScreen()
+              // /
+              // /  un comment it after compleation
+              // /
+              // /
+              StreamBuilder(
+            // auth state change mean as user log in or sign out i
+            //t value changes accordingly and take action and rebuild the widget
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.data != null) {
+                return const HomeScreen();
+              } else {
+                return const SignInScreen();
+              }
+            },
+          )
+          // FirebaseAuth.instance.currentUser != null
+          //     ? HomeScreen()
+          //     : SignInScreen(),
+          ),
     );
   }
 }

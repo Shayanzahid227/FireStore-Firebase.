@@ -14,7 +14,7 @@ class _SplashScreen_0State extends State<SplashScreen_0> {
     await Future.delayed(const Duration(seconds: 2), () {
       // navigator and rout mean from one page to another
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => LogInScreen(),
       ));
     });
   }
