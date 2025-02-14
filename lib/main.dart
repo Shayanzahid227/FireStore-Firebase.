@@ -1,6 +1,6 @@
 import 'package:code_structure/firebase_options.dart';
 import 'package:code_structure/ui/auth/login/login_screen.dart';
-import 'package:code_structure/ui/auth/sign_in/sign_in_screen.dart';
+import 'package:code_structure/ui/auth/sigUp/sign_up_screen.dart';
 import 'package:code_structure/ui/home/home_screen.dart';
 import 'package:code_structure/ui/profile/edit_profile.dart';
 import 'package:code_structure/ui/profile/profile_screen.dart';
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               } else if (snapshot.data != null) {
                 return const HomeScreen();
               } else {
-                return const SignInScreen();
+                return const LogInScreen();
               }
             },
           )

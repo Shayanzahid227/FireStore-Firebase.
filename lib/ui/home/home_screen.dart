@@ -1,5 +1,5 @@
 import 'package:code_structure/custom_widgets/login_button.dart';
-import 'package:code_structure/ui/auth/sign_in/sign_in_screen.dart';
+import 'package:code_structure/ui/auth/sigUp/sign_up_screen.dart';
 import 'package:code_structure/ui/profile/edit_profile.dart';
 import 'package:code_structure/ui/profile/profile_screen.dart';
 import 'package:flutter/material.dart';

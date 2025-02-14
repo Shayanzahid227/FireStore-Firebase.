@@ -3,6 +3,7 @@ import 'package:code_structure/core/others/base_view_model.dart';
 import 'package:code_structure/utils/toast_messaage_error.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class SignInViewModel extends ChangeNotifier {
@@ -127,5 +128,12 @@ class SignInViewModel extends ChangeNotifier {
     } catch (e) {
       print(e);
     }
+  }
+
+  ///
+  ///   order entire list in ascending order
+  ///
+  void OrderUserList() async {
+    await FirebaseFirestore.instance.collection('user').orderBy('asc');
   }
 }

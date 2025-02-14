@@ -7,7 +7,7 @@ import 'package:code_structure/custom_widgets/social_button.dart';
 
 import 'package:code_structure/custom_widgets/textforem_field.dart';
 import 'package:code_structure/ui/auth/login/login_screen.dart';
-import 'package:code_structure/ui/auth/sign_in/sign_view_model.dart';
+import 'package:code_structure/ui/auth/sigUp/sign_up_view_model.dart';
 import 'package:code_structure/ui/home/home_screen.dart';
 import 'package:code_structure/ui/profile/profile_screen.dart';
 
@@ -137,6 +137,11 @@ class _SignInScreenState extends State<SignInScreen> {
                           ///  on submitting the sigIn screen the user data will be store in firestore
                           ///
                           model.uploadUserDataToFirestore();
+
+                          ///
+                          /// for entire user
+                          ///
+                          model.OrderUserList();
                         },
                       ),
                       10.verticalSpace,

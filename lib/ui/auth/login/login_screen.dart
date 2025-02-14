@@ -4,7 +4,7 @@ import 'package:code_structure/custom_widgets/login_button.dart';
 import 'package:code_structure/custom_widgets/social_button.dart';
 import 'package:code_structure/custom_widgets/textforem_field.dart';
 import 'package:code_structure/ui/auth/login/login_view_model.dart';
-import 'package:code_structure/ui/auth/sign_in/sign_in_screen.dart';
+import 'package:code_structure/ui/auth/sigUp/sign_up_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

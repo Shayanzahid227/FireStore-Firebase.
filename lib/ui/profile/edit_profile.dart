@@ -18,6 +18,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _bioController = TextEditingController();
   final _emailController = TextEditingController();
 
+  // if we want that we don't want to store user updated data just update then
+  // comment out the storeUpdatedProfileUserData  function and  don't call it in save changes button below
+
   void storeUpdateProfileUserData() {
     if (currentUser != null) {
       FirebaseFirestore.instance
@@ -41,7 +44,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void updateUserProfileInformation() async {
     final user = await FirebaseAuth.instance.currentUser;
     if (user != null) {
-      FirebaseFirestore.instance.collection('user').doc(currentUser!.uid).set(
+      FirebaseFirestore.instance
+          .collection('user')
+          .doc(currentUser!.uid)
+
+          ///
+          ///   before update i  use set first i stor data then i get again
+          ///
+          .update(
         {
           'name': _nameController.text.toString(),
           'birthday': _birthdayController.text.toString(),
@@ -88,6 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 return Center(child: Text('No data found'));
               }
               return Column(children: [
+                // CircleAvatar(),
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(labelText: 'Name'),

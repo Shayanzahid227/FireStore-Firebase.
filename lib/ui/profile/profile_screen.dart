@@ -1,27 +1,49 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code_structure/core/constants/app_assest.dart';
 import 'package:code_structure/core/constants/colors.dart';
+import 'package:code_structure/core/constants/text_style.dart';
 import 'package:code_structure/custom_widgets/login_button.dart';
 import 'package:code_structure/ui/auth/login/login_screen.dart';
-import 'package:code_structure/ui/auth/login/login_view_model.dart';
-import 'package:code_structure/ui/auth/sign_in/sign_in_screen.dart';
-import 'package:code_structure/ui/auth/sign_in/sign_view_model.dart';
+import 'package:code_structure/ui/auth/sigUp/sign_up_view_model.dart';
 import 'package:code_structure/ui/profile/edit_profile.dart';
-import 'package:code_structure/ui/settings/setting_screen.dart';
+import 'package:code_structure/ui/setting/account_information.dart';
 import 'package:code_structure/utils/toast_messaage_error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  ///
+  /// user sigOut function
+  ///
+  // Future<void> _signOut() async {
+  //   try {
+  //     await FirebaseAuth.instance.signOut();
+  //     print('User signed out');
+  //     // Navigate to the login screen
+  //     Get.replace(LogInScreen());
+  //   } catch (e) {
+  //     print('Error signing out: $e');
+  //   }
+  // }
+
   ///
   ///  delete user account function
   ///
   final currentUser = FirebaseAuth.instance.currentUser;
+
   Future<void> getDeleteUserAccount() async {
     if (currentUser != null) {
       try {
@@ -37,10 +59,6 @@ class ProfileScreen extends StatelessWidget {
           ///
           ///  update this
           ///
-          ///
-          FirebaseAuth.instance.signOut().then((value) {
-            Get.to(LogInScreen());
-          });
         });
         // await currentUser!.delete().then((value){Utils().ToastMessage("user account")})
       } catch (e) {
@@ -49,8 +67,23 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
-  ProfileScreen();
+  ///
+  /// get image from profile
+  ///
+  File? _image;
+  final _picker = ImagePicker();
+  void getImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // Update the state with the new image
+      });
+    } else {
+      print('No image selected.');
+    }
+  }
 
+  // ProfileScreen();
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -72,10 +105,29 @@ class ProfileScreen extends StatelessWidget {
                             ///
                             ///  delete user account
                             ///
-                            getDeleteUserAccount();
+                            getDeleteUserAccount().then((value) {
+                              Get.to(
+                                LogInScreen(),
+                              );
+                            });
+                            // then go to user login screen as user signout
                           },
                           child: Tab(
                             child: Text('delete account'),
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(AccountInformationScreen());
+
+                            ///
+                            ///  delete user account
+                            ///
+                          },
+                          child: Tab(
+                            child: Text('your account information'),
                           ),
                         ),
                       )
@@ -88,6 +140,11 @@ class ProfileScreen extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
+              // streambuilder is used when  we want to see a sudden changes as we done like we edit profile
+              // and as we back every thing was updated but  but..
+              //
+              // if we want to just get or set data then we move towards futurebuilder
+              //
               child: StreamBuilder(
                 // ! mean the current user must not be null
                 // we also use ? but it is for null safety mean if null or not null but ...
@@ -118,45 +175,114 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Center(
-                        child: CircleAvatar(
-                          backgroundColor: whiteColor,
-                          radius: 50,
-                          backgroundImage: AssetImage(
-                            AppAssets().google,
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Stack(
+                            children: [
+                              ///
+                              ///  dp or user image
+                              ///
+
+                              Container(
+                                width: 220.w,
+                                height: 220.h,
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      // backgroundColor: Colors.deepPurple,
+                                      radius: 50,
+                                      backgroundImage: _image != null
+                                          ? kIsWeb // Check if it's the web platform
+                                              ? NetworkImage(_image!
+                                                  .path) // Use NetworkImage for web
+                                              : FileImage(
+                                                  _image!) // Use FileImage for mobile
+                                          : const AssetImage(
+                                              'assets/default_profile.png'),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 72.0, left: 50),
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                              color: Colors.teal,
+                                              shape: BoxShape.circle),
+                                          child: GestureDetector(
+                                            onTap: getImageFromGallery,
+                                            child: Icon(Icons.edit),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ),
                       SizedBox(height: 16),
-                      Text(
-                        snapshot.data!.data()!['name'].toString() ??
-                            'set your name',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "Name: ",
+                            style: style14.copyWith(color: blackColor),
+                          ),
+                          Text(
+                              snapshot.data!.data()!['name'].toString() ??
+                                  'set your name',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey)),
+                        ],
                       ),
 
                       ///
                       ///   birthday
                       ///
-                      Text(
-                        snapshot.data!.data()!['birthday'] ??
-                            'set your birthday',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            "DOB: ",
+                            style: style14.copyWith(color: blackColor),
+                          ),
+                          Text(
+                            snapshot.data!.data()!['birthday'] ??
+                                'set your birthday',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        ///
-                        ///   when ever i update my profile email are disappear ?????????????
-                        ///
-                        snapshot.data!.data()!['email'].toString() ??
-                            'set your email',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Row(
+                        children: [
+                          Text(
+                            "Email: ",
+                            style: style14.copyWith(color: blackColor),
+                          ),
+                          Text(
+                            ///
+                            ///   when ever i update my profile email are disappear ?????????????
+                            ///
+                            snapshot.data!.data()!['email'].toString() ??
+                                'set your email',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        snapshot.data!.data()!['bio'] ??
-                            'set your bio', // snapshot.data!.data()!['name'],
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Row(
+                        children: [
+                          Text(
+                            "Bio: ",
+                            style: style14.copyWith(color: blackColor),
+                          ),
+                          Text(
+                            snapshot.data!.data()!['bio'] ??
+                                'set your bio', // snapshot.data!.data()!['name'],
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
                       ),
                       100.verticalSpace,
                       model.loading
