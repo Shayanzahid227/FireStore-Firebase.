@@ -3,10 +3,12 @@ import 'package:code_structure/custom_widgets/login_button.dart';
 import 'package:code_structure/utils/toast_messaage_error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
@@ -32,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'bio': _bioController.text.toString(),
         'email': _emailController.text.toString(),
       }).then((value) {
-        print(" user updated is loaded to friestore");
+        print(" user updated is loaded to firestore");
       }).onError(
         (error, stackTrace) {
           print(error.toString());

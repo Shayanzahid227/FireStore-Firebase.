@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 
+import '../auth/sigUp/sign_up_screen.dart';
+import '../profile/profile_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -22,21 +25,21 @@ class _HomeScreenState extends State<HomeScreen> {
           Align(
             alignment: Alignment.topLeft,
             child: IconButton(
-                onPressed: () {
-                  //Navigator.of(context).pop();
-                  Get.to(
-                    SignInScreen(),
-                  );
-                },
-                icon: Icon(Icons.arrow_back_ios_sharp)),
+              onPressed: () {
+                //Navigator.of(context).pop();
+                Get.to(SignInScreen());
+              },
+              icon: Icon(Icons.arrow_back_ios_sharp),
+            ),
           ),
           Center(child: Text("home screen")),
           50.verticalSpace,
           CustomloginButton(
-              text: 'profile screen',
-              onPressed: () {
-                Get.to(ProfileScreen());
-              })
+            text: 'profile screen',
+            onPressed: () {
+              Get.to(ProfileScreen());
+            },
+          ),
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:code_structure/core/constants/strings.dart';
+import 'strings.dart';
 
 class AppAssets {
   ///
