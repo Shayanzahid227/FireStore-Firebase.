@@ -1,9 +1,6 @@
 import 'package:code_structure/firebase_options.dart';
 import 'package:code_structure/ui/auth/login/login_screen.dart';
-import 'package:code_structure/ui/auth/sigUp/sign_up_screen.dart';
 import 'package:code_structure/ui/home/home_screen.dart';
-import 'package:code_structure/ui/profile/edit_profile.dart';
-import 'package:code_structure/ui/profile/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +31,12 @@ class MyApp extends StatelessWidget {
         ///   stream builder is use when a value is changing frequently as user log in or sigIn or log out
         ///
         home:
-        //LogInScreen()
-        // /
-        // /  un comment it after compleation
-        // /
-        // /
-        StreamBuilder(
+            //LogInScreen()
+            // /
+            // /  un comment it after compleation
+            // /
+            // /
+            StreamBuilder(
           // auth state change mean as user log in or sign out i
           //t value changes accordingly and take action and rebuild the widget
           stream: FirebaseAuth.instance.authStateChanges(),

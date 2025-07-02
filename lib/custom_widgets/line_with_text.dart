@@ -38,7 +38,7 @@ class CustomLineWithText extends StatelessWidget {
           ),
           Container(
             width: lineWidth, // Set the width of the line
-            height: 1.0,
+            height: 10.0,
             color: Colors.grey, // Line color
           ),
         ],
