@@ -16,7 +16,7 @@ class CustomLineWithText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-          vertical: 20.0), // Adjust padding as needed
+          vertical: 50.0), // Adjust padding as needed
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center, // Center the content
         children: [
