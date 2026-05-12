@@ -35,6 +35,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 ),
                 child: Form(
                   key: model.formKey,
+                  //
                   child: Column(
                     children: [
                       Align(
