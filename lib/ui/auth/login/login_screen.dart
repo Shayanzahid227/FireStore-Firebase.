@@ -31,7 +31,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 padding: const EdgeInsets.only(
                   left: 33,
                   right: 33,
-                  top: 93,
+                  top: 94,
                 ),
                 child: Form(
                   key: model.formKey,
